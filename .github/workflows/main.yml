@@ -25,3 +25,10 @@ jobs:
 
       - name: Run script
         run: python run.py
+
+  manual_run:
+    runs-on: ubuntu-latest
+    needs: run_python
+    steps:
+      - name: Manual Run
+        run: echo "This is a manual run"

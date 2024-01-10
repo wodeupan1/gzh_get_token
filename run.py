@@ -1,11 +1,19 @@
-import socket
+import requests
 import datetime
 
-# 获取当前IP地址
-def get_ip_address():
-    hostname = socket.gethostname()
-    ip_address = socket.gethostbyname(hostname)
-    return ip_address
+sess = requests.session()
+sess.verify = False
+
+# 获取公网IP
+def getMyIp():
+        try:
+            get_url_1 = sess.get('http://httpbin.org/ip')
+            return get_url_1.json()['origin']
+        except requests.HTTPError as e:
+            senderror(e)
+        except:
+            get_url_2 = sess.get('http://ip.42.pl/short')
+            return get_url_2
 
 # 将结果写入日志文件
 def write_to_log(ip_address):
@@ -15,5 +23,5 @@ def write_to_log(ip_address):
         log_file.write(log_content)
 
 if __name__ == "__main__":
-    ip_address = get_ip_address()
+    ip_address = getMyIp()
     write_to_log(ip_address)
